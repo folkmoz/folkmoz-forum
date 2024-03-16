@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { cn } from "@/lib/utils";
 import { Header } from "@/components/Header";
 import { Providers } from "@/contexts/Providers";
 
+import "./globals.css";
+import "react-quill/dist/quill.snow.css";
+
 const kanit = Kanit({
     weight: ["300", "400", "500", "600", "700"],
     subsets: ["latin"],
+    variable: "--font-kanit",
 });
 
 export const metadata: Metadata = {
@@ -28,8 +31,8 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <body
                 className={cn(
-                    kanit.className,
-                    "antialiased flex flex-col h-screen",
+                    kanit.variable,
+                    "antialiased flex flex-col h-screen font-kanit",
                 )}
             >
                 <ThemeProvider

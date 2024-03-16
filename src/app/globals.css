@@ -97,10 +97,34 @@
 
 }
 
+@layer utilities {
+    .border-muted-half {
+        @apply border border-muted-foreground/50;
+    }
+}
+
 @layer components {
     .header-container {
         @apply px-4 mx-auto max-w-7xl;
     }
+}
+
+.quill {
+    border-radius: 12px;
+    min-height: 250px;
+}
+.ql-toolbar.ql-snow {
+    border: none!important;
+   border-bottom: 1px solid hsl(var(--muted-foreground) / 0.5)!important;
+}
+
+.ql-container {
+    font-size: 18px!important;
+    font-family: var(--font-kanit)!important;
+}
+
+.ql-container.ql-snow {
+    border: none!important;
 }
 
 .ck.ck-content:not(.ck-comment__input *) {

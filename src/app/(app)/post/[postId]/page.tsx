@@ -1,9 +1,9 @@
 import { Post } from "@/lib/api/types";
 import { env } from "@/lib/env.mjs";
-import { Banner } from "@/components/Banner";
 import { PostBody } from "@/app/(app)/post/[postId]/_components/PostBody";
 import { cn } from "@/lib/utils";
 import { ActionPanel } from "@/app/(app)/post/[postId]/_components/ActionPanel";
+import { CommentEditor } from "@/app/(app)/post/[postId]/_components/CommentEditor";
 
 async function getPostById(id: string): Promise<Post> {
     const resp = await fetch(env.BACKEND_URL + `/posts/${id}`, {
@@ -57,6 +57,9 @@ export default async function PostPage({
                 </div>
                 <hr className="mt-4 mb-8" />
                 <PostBody body={body} />
+            </div>
+            <div>
+                <CommentEditor />
             </div>
             <ActionPanel />
         </div>

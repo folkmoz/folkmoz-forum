@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
+import { PostPageProvider } from "@/contexts/PostPage.context";
 
 export default async function AppLayout({
     children,
@@ -7,7 +8,7 @@ export default async function AppLayout({
 }) {
     return (
         <>
-            {children}
+            <PostPageProvider>{children}</PostPageProvider>
 
             <Toaster richColors />
         </>
