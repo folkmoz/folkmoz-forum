@@ -26,7 +26,6 @@ export const WebsocketProvider = ({
         if (e.data === "pong") {
             console.log("Received pong");
 
-            // ยกเลิกการรีคอนเนกต์หากได้รับ pong
             if (pongTimeout) {
                 clearTimeout(pongTimeout);
                 pongTimeout = null;
@@ -66,7 +65,6 @@ export const WebsocketProvider = ({
                 wss.current.send("ping");
                 console.log("Sent ping");
 
-                // ตั้งเวลารีคอนเนกต์หากไม่ได้รับ pong
                 pongTimeout = setTimeout(() => {
                     console.log("Pong timeout, reconnecting...");
                     reconnect();
@@ -80,7 +78,7 @@ export const WebsocketProvider = ({
     }, []);
 
     useEffect(() => {
-        if (!wss.current && data?.user) {
+        if (wss.current && data?.user) {
             wss.current = new WebSocket(
                 env.NEXT_PUBLIC_WS_URL + "?name=folkmoz",
             );

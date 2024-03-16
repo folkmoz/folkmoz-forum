@@ -51,7 +51,7 @@ export const SideMenu = ({ session }: { session: AuthSession | null }) => {
                 <div className={"flex items-center gap-4"}>
                     <button
                         onClick={toggle}
-                        className="py-2 px-2 md:px-4 flex gap-4 bg-muted rounded-full items-center md:w-40 hover:opacity-75 transition-opacity ease-in-out duration-200"
+                        className="py-2 px-2 md:px-4 flex gap-4 rounded-full items-center md:w-48 hover:opacity-75 transition-opacity ease-in-out duration-200 border bg-primary-foreground"
                     >
                         <SearchIcon className="h-5 w-5 text-muted-foreground" />
                         <div
@@ -61,7 +61,7 @@ export const SideMenu = ({ session }: { session: AuthSession | null }) => {
                         >
                             ค้นหา
                         </div>
-                        <kbd className="hidden pointer-events-none md:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                        <kbd className="hidden ml-auto pointer-events-none md:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
                             <span className="text-xs">⌘</span>K
                         </kbd>
                     </button>

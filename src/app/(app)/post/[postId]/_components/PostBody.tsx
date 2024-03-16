@@ -4,8 +4,9 @@ type PostPageProps = {
 
 export const PostBody = ({ body }: PostPageProps) => {
     return (
-        <div>
-            <div dangerouslySetInnerHTML={{ __html: body }}></div>
-        </div>
+        <div
+            dangerouslySetInnerHTML={{ __html: body }}
+            className="text-sm md:text-base"
+        ></div>
     );
 };

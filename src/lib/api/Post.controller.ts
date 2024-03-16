@@ -23,12 +23,6 @@ class PostController {
 
         return resp.data;
     }
-
-    public async getPostById(id: string): Promise<Post> {
-        const resp = await this.instance.get(`/posts/${id}`);
-
-        return resp.data;
-    }
 }
 
 const postController = new PostController();

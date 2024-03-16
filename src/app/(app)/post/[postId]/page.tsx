@@ -3,6 +3,7 @@ import { env } from "@/lib/env.mjs";
 import { Banner } from "@/components/Banner";
 import { PostBody } from "@/app/(app)/post/[postId]/_components/PostBody";
 import { cn } from "@/lib/utils";
+import { ActionPanel } from "@/app/(app)/post/[postId]/_components/ActionPanel";
 
 async function getPostById(id: string): Promise<Post> {
     const resp = await fetch(env.BACKEND_URL + `/posts/${id}`, {
@@ -20,6 +21,18 @@ async function getPostById(id: string): Promise<Post> {
     return data[0];
 }
 
+export async function generateMetadata({
+    params: { postId },
+}: {
+    params: { postId: string };
+}) {
+    const post = await getPostById(postId);
+
+    return {
+        title: post.title,
+    };
+}
+
 export default async function PostPage({
     params: { postId },
 }: {
@@ -33,8 +46,10 @@ export default async function PostPage({
                 <div>
                     <h1
                         className={cn("font-semibold text-primary", {
-                            "text-3xl md:text-4xl": title.length < 30,
-                            "text-2xl md:text-3xl": title.length > 30,
+                            "text-2xl sm:text-3xl md:text-4xl":
+                                title.length < 30,
+                            "text-xl sm:text-2xl md:text-3xl":
+                                title.length > 30,
                         })}
                     >
                         #{title}
@@ -43,6 +58,7 @@ export default async function PostPage({
                 <hr className="mt-4 mb-8" />
                 <PostBody body={body} />
             </div>
+            <ActionPanel />
         </div>
     );
 }
