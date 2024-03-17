@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 export const PostPageContext = createContext(
     {} as {
@@ -13,12 +13,14 @@ type PostPageState = {
     isOpenCommentEditor: boolean;
     isOpenActionPanel: boolean;
     comment: string;
+    isSubmitting: boolean;
 };
 
 const initialStatePostPage = {
     isOpenCommentEditor: false,
     isOpenActionPanel: false,
     comment: "",
+    isSubmitting: false,
 };
 
 const postPageReducer = (
@@ -38,6 +40,20 @@ export const PostPageProvider = ({
     const resetState = () => {
         setState(initialStatePostPage);
     };
+
+    useEffect(() => {
+        if (state.isSubmitting) {
+            window.onbeforeunload = () => true;
+        } else {
+            window.onbeforeunload = null;
+        }
+    }, [state.isSubmitting]);
+
+    useEffect(() => {
+        return () => {
+            resetState();
+        };
+    }, []);
 
     return (
         <PostPageContext.Provider value={{ state, setState, resetState }}>

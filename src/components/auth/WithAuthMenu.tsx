@@ -9,6 +9,7 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UserProfileImage } from "@/components/UserProfileImage";
 
 export const WithAuthMenu = ({ session }: { session: AuthSession }) => {
     const { user } = session.session!;
@@ -21,20 +22,11 @@ export const WithAuthMenu = ({ session }: { session: AuthSession }) => {
                         type="button"
                         className="hover:opacity-75 outline-none rounded-full overflow-hidden"
                     >
-                        {user.image ? (
-                            <img
-                                referrerPolicy="no-referrer"
-                                src={user.image!}
-                                alt={`Profile picture of ${user.name}`}
-                                className="w-8 h-8rounded-full"
-                            />
-                        ) : (
-                            <div className="w-8 h-8 rounded-full bg-primary">
-                                <div className="flex items-center justify-center h-full text-white">
-                                    {user.name[0].toUpperCase()}
-                                </div>
-                            </div>
-                        )}
+                        <UserProfileImage
+                            image={user.image}
+                            name={user.name}
+                            size="sm"
+                        />
                     </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">

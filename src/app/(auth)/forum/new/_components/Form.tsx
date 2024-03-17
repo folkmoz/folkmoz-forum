@@ -7,8 +7,6 @@ import { TextEditor } from "@/app/(auth)/forum/new/_components/TextEditor";
 import { useNewForum } from "@/contexts/NewForum.context";
 import { UploadZone } from "@/app/(auth)/forum/new/_components/UploadZone";
 import { saveData } from "@/app/(auth)/forum/new/action";
-import axios from "axios";
-import { FormEventHandler } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
 export const Form = () => {

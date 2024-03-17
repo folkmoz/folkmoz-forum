@@ -45,6 +45,13 @@ const fadeInUp = {
 export const ActionPanel = () => {
     const { state, setState } = usePostPage();
 
+    const toggleCommentEditor = () => {
+        if (state.isSubmitting) return;
+        setState({
+            isOpenCommentEditor: !state.isOpenCommentEditor,
+        });
+    };
+
     return (
         <div className="fixed bottom-0 left-0 right-0 max-w-[1244px] mx-auto px-6">
             <div className="relative">
@@ -67,13 +74,9 @@ export const ActionPanel = () => {
                         <ActionButton act="Angry" Icon={AngryIcon} />
                     </motion.div>
                     <button
-                        onClick={() =>
-                            setState({
-                                isOpenCommentEditor: !state.isOpenCommentEditor,
-                            })
-                        }
+                        onClick={toggleCommentEditor}
                         className={cn(
-                            "p-3 border border-muted-foreground rounded-full hover:bg-muted-foreground/5 transition-all duration-200 ease-in-out",
+                            "p-3 border border-muted-foreground rounded-full bg-primary-foreground hover:bg-primary-foreground transition-all duration-200 ease-in-out",
                             {
                                 "rotate-90": state.isOpenCommentEditor,
                             },
@@ -89,7 +92,7 @@ export const ActionPanel = () => {
 
                     <button
                         className={
-                            "p-3 border border-muted-foreground rounded-full hover:bg-muted-foreground/5 transition-all duration-200 ease-in-out"
+                            "p-3 border border-muted-foreground rounded-full bg-primary-foreground hover:bg-primary-foreground transition-all duration-200 ease-in-out"
                         }
                     >
                         <ShareIcon className="text-muted-foreground" />

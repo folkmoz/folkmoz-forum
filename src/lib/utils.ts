@@ -1,6 +1,7 @@
 import { customAlphabet } from "nanoid";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import dayjs from "@/lib/dayjs";
 
 type FileWithPreview = File & { preview: string };
 
@@ -12,6 +13,10 @@ export const nanoid = customAlphabet(
     "abcdefghijklmnopqrstuvwxyz0123456789",
     12,
 );
+
+export const timeAgo = (date: Date | string) => {
+    return dayjs(date).tz("Asia/Bangkok").fromNow();
+};
 
 export const fileToDataUri = (
     image: File,

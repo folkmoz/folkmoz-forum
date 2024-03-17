@@ -13,3 +13,17 @@ export interface Owner {
     image: string;
     name: string;
 }
+
+export interface Comment {
+    id: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: null;
+    author: Partial<Owner>;
+    reactions: Reactions[] | null;
+}
+
+export interface Reactions {
+    reaction_type: string;
+    createdAt: string;
+}

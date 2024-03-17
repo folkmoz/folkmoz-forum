@@ -111,7 +111,7 @@
 
 .quill {
     border-radius: 12px;
-    min-height: 250px;
+    height: 300px;
 }
 .ql-toolbar.ql-snow {
     border: none!important;
@@ -121,11 +121,13 @@
 .ql-container {
     font-size: 18px!important;
     font-family: var(--font-kanit)!important;
+    height: calc(100% - 50px)!important;
 }
 
 .ql-container.ql-snow {
     border: none!important;
 }
+
 
 .ck.ck-content:not(.ck-comment__input *) {
     min-height: 300px;
