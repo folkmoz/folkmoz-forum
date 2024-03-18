@@ -78,7 +78,7 @@ export const WebsocketProvider = ({
     }, []);
 
     useEffect(() => {
-        if (wss.current && data?.user) {
+        if (!wss.current && data?.user) {
             wss.current = new WebSocket(
                 env.NEXT_PUBLIC_WS_URL + "?name=folkmoz",
             );

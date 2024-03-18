@@ -35,7 +35,7 @@ export const post = pgTable("post", {
         .$defaultFn(() => nanoid()),
     userId: text("user_id")
         .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
+        .references(() => users.id, { onDelete: "cascade" }),
     body: text("body").notNull(),
     imageCover: text("image_cover"),
     visited: integer("visited").default(0),
@@ -45,15 +45,6 @@ export const post = pgTable("post", {
     }).defaultNow(),
     updatedAt: timestamp("updated_at", { mode: "string" }),
     title: text("title").notNull(),
-});
-
-export const user = pgTable("user", {
-    id: text("id").primaryKey().notNull(),
-    name: text("name"),
-    email: text("email").notNull(),
-    emailVerified: timestamp("emailVerified", { mode: "string" }),
-    image: text("image"),
-    createdAt: timestamp("createdAt", { mode: "string" }).defaultNow(),
 });
 
 export const comment = pgTable("comment", {
@@ -66,7 +57,7 @@ export const comment = pgTable("comment", {
         .references(() => post.id, { onDelete: "cascade" }),
     userId: text("user_id")
         .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
+        .references(() => users.id, { onDelete: "cascade" }),
     content: text("content").notNull(),
     createdAt: timestamp("created_at", {
         precision: 6,
@@ -81,9 +72,12 @@ export const commentReaction = pgTable("comment_reaction", {
         .references(() => comment.id, { onDelete: "cascade" }),
     userId: text("user_id")
         .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
+        .references(() => users.id, { onDelete: "cascade" }),
     reactionType: reactions("reaction_type").notNull(),
-    createdAt: timestamp("created_at", { mode: "string" }).defaultNow(),
+    createdAt: timestamp("created_at", {
+        precision: 6,
+        withTimezone: true,
+    }).defaultNow(),
 });
 
 export const notification = pgTable("notification", {
@@ -93,12 +87,15 @@ export const notification = pgTable("notification", {
         .$defaultFn(() => nanoid()),
     userId: text("user_id")
         .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
+        .references(() => users.id, { onDelete: "cascade" }),
     refId: text("ref_id"),
     content: text("content").notNull(),
     type: text("type").notNull(),
     read: boolean("read").default(false),
-    createdAt: timestamp("created_at", { mode: "string" }).defaultNow(),
+    createdAt: timestamp("created_at", {
+        precision: 6,
+        withTimezone: true,
+    }).defaultNow(),
 });
 
 export const postReaction = pgTable("post_reaction", {
@@ -107,9 +104,12 @@ export const postReaction = pgTable("post_reaction", {
         .references(() => post.id, { onDelete: "cascade" }),
     userId: text("user_id")
         .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
+        .references(() => users.id, { onDelete: "cascade" }),
     reactionType: reactions("reaction_type").notNull(),
-    createdAt: timestamp("created_at", { mode: "string" }).defaultNow(),
+    createdAt: timestamp("created_at", {
+        precision: 6,
+        withTimezone: true,
+    }).defaultNow(),
 });
 
 export const savedPost = pgTable("saved_post", {
@@ -118,8 +118,11 @@ export const savedPost = pgTable("saved_post", {
         .references(() => post.id, { onDelete: "cascade" }),
     userId: text("user_id")
         .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
-    createdAt: timestamp("created_at", { mode: "string" }).defaultNow(),
+        .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", {
+        precision: 6,
+        withTimezone: true,
+    }).defaultNow(),
 });
 
 export const postSubscription = pgTable("post_subscription", {
@@ -128,8 +131,11 @@ export const postSubscription = pgTable("post_subscription", {
         .references(() => post.id, { onDelete: "cascade" }),
     userId: text("user_id")
         .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
-    createdAt: timestamp("created_at", { mode: "string" }).defaultNow(),
+        .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", {
+        precision: 6,
+        withTimezone: true,
+    }).defaultNow(),
 });
 
 export const accounts = pgTable(
