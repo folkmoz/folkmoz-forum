@@ -6,6 +6,7 @@ import { ActionPanel } from "@/app/(app)/post/[postId]/_components/ActionPanel";
 import { CommentEditor } from "@/app/(app)/post/[postId]/_components/CommentEditor";
 import { CommentCount } from "@/app/(app)/post/[postId]/_components/CommentCount";
 import { CommentList } from "@/app/(app)/post/[postId]/_components/CommentList";
+import { getUserAuth } from "@/lib/auth/utils";
 
 interface GetPostByIdResponse extends Post {
     comments: Comment[];
@@ -52,6 +53,9 @@ export default async function PostPage({
     const { title, body, imageCover, visited, comments } =
         await getPostById(postId);
 
+    const { session } = await getUserAuth();
+    const user = session?.user || null;
+
     return (
         <div className="flex flex-col pt-8">
             <div className="border border-muted-foreground/50 p-4 rounded-md">
@@ -72,8 +76,8 @@ export default async function PostPage({
             </div>
             <CommentCount count={comments ? comments.length : 0} />
 
-            <CommentList comments={comments} />
-            <CommentEditor postId={postId} />
+            <CommentList comments={comments} user={user} postId={postId} />
+            {user && <CommentEditor postId={postId} />}
 
             <ActionPanel />
         </div>

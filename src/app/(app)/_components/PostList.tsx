@@ -1,11 +1,22 @@
-import { postController } from "@/lib/api/Post.controller";
 import { PostItem } from "@/app/(app)/_components/PostItem";
+import { env } from "@/lib/env.mjs";
+import { Post } from "@/lib/api/types";
+async function getPosts(): Promise<Post[]> {
+    const backendUrl = env.BACKEND_URL;
+    const res = await fetch(`${backendUrl}/posts`, {
+        next: {
+            revalidate: 60,
+            tags: ["posts"],
+        },
+    });
+    return await res.json();
+}
 
 export const PostList = async () => {
-    const posts = await postController.getAllPosts();
-
+    const posts = await getPosts();
     return (
         <>
+            <div>Home</div>
             {posts.map((post) => (
                 <PostItem post={post} key={post.id} />
             ))}

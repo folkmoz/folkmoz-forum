@@ -2,23 +2,44 @@ import { Comment } from "@/lib/api/types";
 import { useMemo } from "react";
 import { timeAgo } from "@/lib/utils";
 import { UserProfileImage } from "@/components/UserProfileImage";
+
 import {
     MessageCircleIcon,
     MessageCircleMoreIcon,
     ShareIcon,
-    ThumbsUpIcon,
 } from "lucide-react";
+import { User } from "@/lib/auth/utils";
+import { LikesButton } from "@/app/(app)/post/[postId]/_components/LikesButton";
+import { ReactionType } from "@/lib/types";
+
+type CommentItemProps = {
+    comment: Comment;
+    i: number;
+    currentUser: User | null;
+    postId: string;
+};
 
 export const CommentItem = ({
     comment,
     i,
-}: {
-    comment: Comment;
-    i: number;
-}) => {
+    currentUser,
+    postId,
+}: CommentItemProps) => {
     const timeFromNow = useMemo(() => {
         return timeAgo(comment.createdAt);
     }, []);
+
+    const reaction = useMemo<ReactionType>(() => {
+        if (!comment.reactions || !currentUser) return "unliked";
+        const haveLiked = !!comment.reactions.find(
+            (r) => r.userId === currentUser.id,
+        );
+
+        if (!haveLiked) return "unliked";
+
+        return comment.reactions.find((r) => r.userId === currentUser.id)!
+            .reactionType as ReactionType;
+    }, [comment.reactions, currentUser]);
 
     return (
         <div className="relative py-6 px-6 md:px-10 mt-10 bg-[#F7F7F7] rounded-md">
@@ -33,7 +54,7 @@ export const CommentItem = ({
                     image={comment.author.image}
                     name={comment.author.name || "Anonymous"}
                 />
-                <div className="pt-2">
+                <div className="pt-1">
                     <div className="flex items-center gap-2">
                         <p className="text-lg font-semibold">
                             {comment.author.name}
@@ -46,27 +67,26 @@ export const CommentItem = ({
                             __html: comment.content,
                         }}
                     ></div>
-                    <div className="flex mt-8 gap-8">
-                        <button className="flex items-center gap-2 text-muted-foreground active:scale-95">
-                            <span>
-                                <ThumbsUpIcon />
-                            </span>
-                            ถูกใจ
-                        </button>
-                        <button className="flex items-center gap-2 text-muted-foreground">
-                            <span>
-                                <MessageCircleIcon />
-                            </span>
-                            ตอบกลับ
-                        </button>
-                        <button className="flex items-center gap-2 text-muted-foreground">
-                            <span>
-                                <ShareIcon />
-                            </span>
-                            แชร์
-                        </button>
-                    </div>
                 </div>
+            </div>
+            <div className="flex mt-8">
+                <LikesButton
+                    reaction={reaction}
+                    postId={postId}
+                    commentId={comment.id}
+                />
+                <button className="flex items-center gap-2 text-muted-foreground active:scale-95 hover:bg-neutral-200/70 py-3 px-5 rounded-md">
+                    <span>
+                        <MessageCircleIcon />
+                    </span>
+                    ตอบกลับ
+                </button>
+                <button className="flex items-center gap-2 text-muted-foreground active:scale-95 hover:bg-neutral-200/70 py-3 px-5 rounded-md">
+                    <span>
+                        <ShareIcon />
+                    </span>
+                    แชร์
+                </button>
             </div>
         </div>
     );

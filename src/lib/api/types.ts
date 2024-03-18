@@ -24,6 +24,7 @@ export interface Comment {
 }
 
 export interface Reactions {
-    reaction_type: string;
+    reactionType: string;
+    userId: string;
     createdAt: string;
 }

@@ -14,14 +14,16 @@ declare module "next-auth" {
     }
 }
 
+export type User = {
+    id: string;
+    name: string;
+    email: string;
+    image?: string;
+};
+
 export type AuthSession = {
     session: {
-        user: {
-            id: string;
-            name: string;
-            email: string;
-            image?: string;
-        };
+        user: User;
     } | null;
 };
 

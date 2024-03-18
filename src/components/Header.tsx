@@ -25,7 +25,7 @@ export const Header = async () => {
                             <div className="flex items-center space-x-4">
                                 <Link href={"/"}>
                                     <Image
-                                        src="/images/logo.svg"
+                                        src="/images/Logo.svg"
                                         alt="Logo"
                                         width={34}
                                         height={40}

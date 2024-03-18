@@ -1,3 +1,4 @@
+import "server-only";
 import axios from "axios";
 import { cookies } from "next/headers";
 import { env } from "@/lib/env.mjs";

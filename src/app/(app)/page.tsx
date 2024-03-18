@@ -9,7 +9,7 @@ export default function Home() {
         <>
             <Banner
                 title="แชร์ประสบการณ์ของคุณ"
-                imageSrc={"/images/banner.jpg"}
+                imageSrc={"/images/Banner.jpg"}
             />
             <div className="flex justify-center my-8">
                 <Link href="/forum/new">

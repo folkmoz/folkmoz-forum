@@ -7,7 +7,7 @@ import { usePostPage } from "@/contexts/PostPage.context";
 import { cn } from "@/lib/utils";
 import { SendHorizonalIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
-import { saveComment } from "@/app/(app)/post/[postId]/action";
+import { saveComment } from "@/app/(app)/post/[postId]/actions";
 
 const QuillEditor = dynamic(
     () =>
