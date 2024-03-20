@@ -2,14 +2,9 @@ import { Comment } from "@/lib/api/types";
 import { useMemo } from "react";
 import { timeAgo } from "@/lib/utils";
 import { UserProfileImage } from "@/components/UserProfileImage";
-
-import {
-    MessageCircleIcon,
-    MessageCircleMoreIcon,
-    ShareIcon,
-} from "lucide-react";
+import { MessageCircleIcon, ShareIcon } from "lucide-react";
 import { User } from "@/lib/auth/utils";
-import { LikesButton } from "@/app/(app)/post/[postId]/_components/LikesButton";
+import { LikesCommentButton } from "@/app/(app)/post/[postId]/_components/LikesCommentButton";
 import { ReactionType } from "@/lib/types";
 
 type CommentItemProps = {
@@ -45,8 +40,7 @@ export const CommentItem = ({
         <div className="relative py-6 px-6 md:px-10 mt-10 bg-[#F7F7F7] rounded-md">
             <span className="absolute -top-7 left-0 text-lg hover:underline text-muted-foreground">
                 <a href={"#"} className="inline-flex gap-2">
-                    <MessageCircleMoreIcon />
-                    ความคิดเห็นที่ {i + 1}
+                    #ความคิดเห็นที่ {i + 1}
                 </a>
             </span>
             <div className="flex gap-5">
@@ -70,7 +64,7 @@ export const CommentItem = ({
                 </div>
             </div>
             <div className="flex mt-8">
-                <LikesButton
+                <LikesCommentButton
                     reaction={reaction}
                     postId={postId}
                     commentId={comment.id}

@@ -49,12 +49,6 @@ export const PostPageProvider = ({
         }
     }, [state.isSubmitting]);
 
-    useEffect(() => {
-        return () => {
-            resetState();
-        };
-    }, []);
-
     return (
         <PostPageContext.Provider value={{ state, setState, resetState }}>
             {children}

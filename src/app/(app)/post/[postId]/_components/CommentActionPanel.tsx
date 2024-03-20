@@ -33,7 +33,7 @@ const reactions = [
 export const CommentActionPanel = () => {
     return (
         <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 px-1">
+            <div className="flex items-center px-1">
                 {reactions.map((reaction) => (
                     <button
                         key={reaction.name}

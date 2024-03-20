@@ -3,8 +3,8 @@
 import { signIn, signOut } from "next-auth/react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export const AuthMenu = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     return (
@@ -28,11 +28,12 @@ const WithoutAuth = () => {
     const [title, setTitle] = useState("เข้าสู่ระบบ");
     const [open, setOpen] = useState(false);
     const searchParams = useSearchParams();
+    const pathname = usePathname();
     const isRequiredAuth = searchParams.get("auth") === "required";
 
     const onClose = (state: boolean) => {
         if (!state) {
-            window.history.replaceState({}, "", "/");
+            window.history.replaceState({}, "", pathname);
         }
 
         setOpen(state);
@@ -74,7 +75,7 @@ const WithoutAuth = () => {
                 <div className="flex">
                     <div className="flex-1">
                         <Image
-                            src={"/images/hoo.jpg"}
+                            src={"/images/Hoo.jpg"}
                             alt={""}
                             className={"object-cover"}
                             height={500}
@@ -85,7 +86,7 @@ const WithoutAuth = () => {
                     <div className="flex-1 flex flex-col items-center p-8 w-full bg-background">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src={"/images/logo.svg"}
+                            src={"/images/Logo.svg"}
                             alt={"logo"}
                             width={50}
                             className={"mb-4"}

@@ -1,18 +1,15 @@
 "use server";
 
 import { CloudinaryAPI } from "@/lib/api/CloudinaryAPI";
-import { postController } from "@/lib/api/Post.controller";
+import { PostController } from "@/lib/api/Post.controller";
+import { handlerResponse } from "@/lib/utils";
+import { ActionResp } from "@/lib/api/types";
 
 type Data = {
     title: string;
     content: string;
     isDefaultImage: boolean;
     image: string;
-};
-
-type ActionResp = {
-    message: string | null;
-    status: "success" | "error";
 };
 
 export const saveData = async (json: string): Promise<ActionResp> => {
@@ -27,15 +24,15 @@ export const saveData = async (json: string): Promise<ActionResp> => {
             return { message: "Error uploading image", status: "error" };
         }
 
-        const response = await postController.createPost(
+        const postController = new PostController();
+        const resp = await postController.createPost(
             data.title,
             data.content,
             uploadResult.secure_url,
         );
 
-        return { message: "Data saved!", status: "success" };
+        return handlerResponse.ok("Data saved!");
     } catch (error) {
-        console.log(error);
-        return { message: "Error saving data", status: "error" };
+        return handlerResponse.error(error);
     }
 };

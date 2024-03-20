@@ -1,21 +1,55 @@
 "use server";
 
-import { postController } from "@/lib/api/Post.controller";
+import { PostController } from "@/lib/api/Post.controller";
 import z from "zod";
 import { revalidateTag } from "next/cache";
 import { ReactionType } from "@/lib/types";
-import { commentController } from "@/lib/api/Comment.controller";
-import { reactions } from "@/lib/db/schema/auth";
-
-type ActionResp = {
-    message: string | null;
-    status: "success" | "error";
-};
+import { CommentController } from "@/lib/api/Comment.controller";
+import { handlerResponse } from "@/lib/utils";
+import { ActionResp } from "@/lib/api/types";
 
 const schema = z.object({
     postId: z.string(),
     content: z.string(),
 });
+
+export const removeReactionToPost = async (
+    postId: string,
+): Promise<ActionResp> => {
+    try {
+        if (!postId) return { message: "Invalid data", status: "error" };
+
+        const postController = new PostController();
+
+        await postController.removeReactionToPost(postId);
+
+        revalidateTag(`post-${postId}`);
+
+        return handlerResponse.ok("Data saved!");
+    } catch (error) {
+        return handlerResponse.error(error);
+    }
+};
+
+export const reactionToPost = async (
+    postId: string,
+    action: ReactionType,
+): Promise<ActionResp> => {
+    try {
+        if (!postId || !action)
+            return { message: "Invalid data", status: "error" };
+
+        const postController = new PostController();
+
+        await postController.actionToPost(postId, action);
+
+        revalidateTag(`post-${postId}`);
+
+        return handlerResponse.ok("Data saved!");
+    } catch (error) {
+        return handlerResponse.error(error);
+    }
+};
 
 export const saveComment = async (formData: FormData): Promise<ActionResp> => {
     try {
@@ -26,15 +60,15 @@ export const saveComment = async (formData: FormData): Promise<ActionResp> => {
 
         if (!data.content || !data.postId)
             return { message: "Invalid data", status: "error" };
+        const postController = new PostController();
 
         await postController.createComment(data.postId, data.content);
 
         revalidateTag(`post-${data.postId}`);
 
-        return { message: "Data saved!", status: "success" };
+        return handlerResponse.ok("Data saved!");
     } catch (error) {
-        console.log(error);
-        return { message: "Error saving data", status: "error" };
+        return handlerResponse.error(error);
     }
 };
 
@@ -47,18 +81,15 @@ export const reactionToComment = async (
         if (!postId || !commentId || !action)
             return { message: "Invalid data", status: "error" };
 
+        const commentController = new CommentController();
+
         await commentController.actionToComment(postId, commentId, action);
 
         revalidateTag(`post-${postId}`);
 
-        return { message: "", status: "success" };
+        return handlerResponse.ok("Data saved!");
     } catch (error) {
-        console.log(error);
-        return {
-            message:
-                error instanceof Error ? error.message : "Error saving data",
-            status: "error",
-        };
+        return handlerResponse.error(error);
     }
 };
 
@@ -70,20 +101,13 @@ export const cancelReactionToComment = async (
         if (!postId || !commentId)
             return { message: "Invalid data", status: "error" };
 
-        const is = await commentController.cancelReactionToComment(
-            postId,
-            commentId,
-        );
+        const commentController = new CommentController();
+        await commentController.cancelReactionToComment(postId, commentId);
 
         revalidateTag(`post-${postId}`);
 
-        return { message: "", status: "success" };
+        return handlerResponse.ok("Data saved!");
     } catch (error) {
-        console.log(error);
-        return {
-            message:
-                error instanceof Error ? error.message : "Error saving data",
-            status: "error",
-        };
+        return handlerResponse.error(error);
     }
 };

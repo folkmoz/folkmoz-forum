@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { SendHorizonalIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { saveComment } from "@/app/(app)/post/[postId]/actions";
+import { toast } from "sonner";
 
 const QuillEditor = dynamic(
     () =>
@@ -70,14 +71,27 @@ export const CommentEditor = ({ postId }: { postId: string }) => {
             isBlurred.current = false;
             animation.start("hidden");
 
+            toast.info("สร้างข้อความตอบกลับสำเร็จแล้ว", {
+                closeButton: true,
+            });
+
             setTimeout(() => {
                 window.scrollTo({
                     top: document.body.scrollHeight,
                     behavior: "smooth",
                 });
             }, 500);
+        } else {
+            setState({ isSubmitting: false });
+            toast.error(resp.message);
         }
     };
+
+    useEffect(() => {
+        return () => {
+            resetState();
+        };
+    }, []);
 
     useEffect(() => {
         if (state.isOpenCommentEditor) {

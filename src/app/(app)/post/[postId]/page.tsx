@@ -1,15 +1,15 @@
-import { Post, Comment } from "@/lib/api/types";
+import { Post, Comment, Reactions } from "@/lib/api/types";
 import { env } from "@/lib/env.mjs";
-import { PostBody } from "@/app/(app)/post/[postId]/_components/PostBody";
-import { cn } from "@/lib/utils";
 import { ActionPanel } from "@/app/(app)/post/[postId]/_components/ActionPanel";
 import { CommentEditor } from "@/app/(app)/post/[postId]/_components/CommentEditor";
 import { CommentCount } from "@/app/(app)/post/[postId]/_components/CommentCount";
 import { CommentList } from "@/app/(app)/post/[postId]/_components/CommentList";
 import { getUserAuth } from "@/lib/auth/utils";
+import { PostHeader } from "@/app/(app)/post/[postId]/_components/PostHeader";
 
 interface GetPostByIdResponse extends Post {
     comments: Comment[];
+    reactions: Reactions[];
 }
 
 async function getPostById(
@@ -50,7 +50,7 @@ export default async function PostPage({
 }: {
     params: { postId: string };
 }) {
-    const { title, body, imageCover, visited, comments } =
+    const { title, body, imageCover, visited, comments, reactions } =
         await getPostById(postId);
 
     const { session } = await getUserAuth();
@@ -58,28 +58,17 @@ export default async function PostPage({
 
     return (
         <div className="flex flex-col pt-8">
-            <div className="border border-muted-foreground/50 p-4 rounded-md">
-                <div>
-                    <h1
-                        className={cn("font-semibold text-primary", {
-                            "text-2xl sm:text-3xl md:text-4xl":
-                                title.length < 30,
-                            "text-xl sm:text-2xl md:text-3xl":
-                                title.length > 30,
-                        })}
-                    >
-                        #{title}
-                    </h1>
-                </div>
-                <hr className="mt-4 mb-8" />
-                <PostBody body={body} />
-            </div>
+            <PostHeader title={title} body={body} reactions={reactions} />
             <CommentCount count={comments ? comments.length : 0} />
 
             <CommentList comments={comments} user={user} postId={postId} />
             {user && <CommentEditor postId={postId} />}
 
-            <ActionPanel />
+            <ActionPanel
+                reactions={reactions}
+                userId={user?.id || ""}
+                postId={postId}
+            />
         </div>
     );
 }

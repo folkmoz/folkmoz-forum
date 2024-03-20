@@ -28,3 +28,8 @@ export interface Reactions {
     userId: string;
     createdAt: string;
 }
+
+export type ActionResp = {
+    message: string | null;
+    status: "success" | "error";
+};

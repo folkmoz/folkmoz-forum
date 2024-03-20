@@ -2,11 +2,16 @@ import { createInstance } from "@/lib/api/Instance";
 import { AxiosInstance } from "axios";
 import { getUserAuth } from "@/lib/auth/utils";
 import { ReactionType } from "@/lib/types";
+import { cookies } from "next/headers";
 
-class CommentController {
+export class CommentController {
     private instance: AxiosInstance;
+    private readonly cookies;
     constructor() {
         this.instance = createInstance();
+        this.cookies = cookies()
+            .getAll()
+            .map((c) => `${c.name}=${c.value}`);
     }
 
     private async checkAuth(error?: string) {
@@ -26,6 +31,11 @@ class CommentController {
             {
                 action,
             },
+            {
+                headers: {
+                    Cookie: this.cookies,
+                },
+            },
         );
 
         return resp.status === 200;
@@ -36,11 +46,13 @@ class CommentController {
 
         const resp = await this.instance.delete(
             `/posts/${postId}/comments/${commentId}/reactions`,
+            {
+                headers: {
+                    Cookie: this.cookies,
+                },
+            },
         );
 
         return resp.status === 200;
     }
 }
-
-const commentController = new CommentController();
-export { commentController };

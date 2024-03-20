@@ -5,6 +5,7 @@ import { Adapter } from "next-auth/adapters";
 import { redirect } from "next/navigation";
 import { env } from "@/lib/env.mjs";
 import GoogleProvider from "next-auth/providers/google";
+import { cookies } from "next/headers";
 
 declare module "next-auth" {
     interface Session {
@@ -33,6 +34,9 @@ export const authOptions: NextAuthOptions = {
         session: ({ session, user }) => {
             session.user.id = user.id;
             return session;
+        },
+        signIn: async ({ user, account, profile }) => {
+            return true;
         },
     },
     providers: [

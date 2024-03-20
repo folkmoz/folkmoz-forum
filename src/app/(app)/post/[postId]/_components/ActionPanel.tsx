@@ -1,40 +1,19 @@
 "use client";
 
+import { Reactions } from "@/lib/api/types";
+import { useMemo } from "react";
+import { LikesPostButton } from "@/app/(app)/post/[postId]/_components/LikesPostButton";
 import { motion } from "framer-motion";
-import {
-    AngryIcon,
-    FrownIcon,
-    HeartIcon,
-    LaughIcon,
-    MessageCircleIcon,
-    ShareIcon,
-    ThumbsDownIcon,
-    ThumbsUpIcon,
-    XIcon,
-} from "lucide-react";
-import { usePostPage } from "@/contexts/PostPage.context";
+import { MessageCircleIcon, ShareIcon, XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePostPage } from "@/contexts/PostPage.context";
+import { useAuth } from "@/hooks/useAuth";
+import { ReactionType } from "@/lib/types";
 
-const ActionButton = ({
-    act,
-    Icon,
-    className,
-    onClick,
-}: {
-    act: string;
-    Icon: React.FC<React.SVGAttributes<SVGElement>>;
-    className?: string;
-    onClick?: () => void;
-}) => {
-    return (
-        <motion.button
-            onClick={onClick}
-            className={cn("p-3 group relative", className)}
-        >
-            <Icon className="group-hover:scale-[1.2] group-active:scale-[1.1] text-muted-foreground transition-transform duration-200" />
-            <p className="sr-only">{act}</p>
-        </motion.button>
-    );
+type ActionPanelProps = {
+    reactions: Reactions[];
+    userId: string;
+    postId: string;
 };
 
 const fadeInUp = {
@@ -42,13 +21,27 @@ const fadeInUp = {
     visible: { opacity: 1, y: 0 },
 };
 
-export const ActionPanel = () => {
+export const ActionPanel = ({
+    reactions,
+    userId,
+    postId,
+}: ActionPanelProps) => {
     const { state, setState } = usePostPage();
+    const { requiredAuth } = useAuth();
+    const reaction = useMemo(() => {
+        if (!userId) return "unliked";
+        const found = reactions.find((r) => r.userId === userId);
+
+        if (!found) return "unliked";
+        return found.reactionType;
+    }, [reactions, userId]) as ReactionType;
 
     const toggleCommentEditor = () => {
-        if (state.isSubmitting) return;
-        setState({
-            isOpenCommentEditor: !state.isOpenCommentEditor,
+        requiredAuth(() => {
+            if (state.isSubmitting) return;
+            setState({
+                isOpenCommentEditor: !state.isOpenCommentEditor,
+            });
         });
     };
 
@@ -61,18 +54,7 @@ export const ActionPanel = () => {
                     animate="visible"
                     className="absolute bottom-20 right-0 flex flex-col gap-4 items-center my-4"
                 >
-                    <motion.div
-                        initial={{ height: 50 }}
-                        whileHover={{ height: "auto" }}
-                        className="rounded-full border border-muted-foreground flex flex-col-reverse overflow-hidden bg-primary-foreground"
-                    >
-                        <ActionButton act="Like" Icon={ThumbsUpIcon} />
-                        <ActionButton act="Unlike" Icon={ThumbsDownIcon} />
-                        <ActionButton act="Love" Icon={HeartIcon} />
-                        <ActionButton act="Haha" Icon={LaughIcon} />
-                        <ActionButton act="Sad" Icon={FrownIcon} />
-                        <ActionButton act="Angry" Icon={AngryIcon} />
-                    </motion.div>
+                    <LikesPostButton reaction={reaction} postId={postId} />
                     <button
                         onClick={toggleCommentEditor}
                         className={cn(
