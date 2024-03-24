@@ -109,7 +109,10 @@ export const LikesPostButton = ({ reaction, postId }: LikesPostButtonProps) => {
                     height: 50,
                     backgroundColor:
                         liked === "unliked" ? "#fff" : colorUsed[liked],
-                    borderColor: liked === "unliked" ? colorUsed[liked] : "",
+                    borderColor:
+                        liked === "unliked"
+                            ? colorUsed[liked]
+                            : colorUsed[liked],
                 }}
                 whileHover={{
                     height: isExpanded ? 250 : 50,

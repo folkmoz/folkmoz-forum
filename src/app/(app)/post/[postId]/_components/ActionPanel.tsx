@@ -52,7 +52,7 @@ export const ActionPanel = ({
                     variants={fadeInUp}
                     initial="hidden"
                     animate="visible"
-                    className="absolute bottom-20 right-0 flex flex-col gap-4 items-center my-4"
+                    className="absolute bottom-40 right-0 flex flex-col gap-4 items-center my-4"
                 >
                     <LikesPostButton reaction={reaction} postId={postId} />
                     <button
