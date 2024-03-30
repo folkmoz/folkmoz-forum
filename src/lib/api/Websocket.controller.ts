@@ -2,7 +2,7 @@ const PING_INTERVAL = 1000 * 60 * 3;
 const PONG_TIMEOUT = 1000 * 10;
 export class WebsocketController {
     private wss: WebSocket | null = null;
-    private url: string;
+    private readonly url: string;
     private pongTimeout: NodeJS.Timeout | null = null;
     private pingInterval: NodeJS.Timeout | null = null;
 

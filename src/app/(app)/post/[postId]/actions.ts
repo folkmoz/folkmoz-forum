@@ -47,6 +47,7 @@ export const reactionToPost = async (
 
         return handlerResponse.ok("Data saved!");
     } catch (error) {
+        console.log(error);
         return handlerResponse.error(error);
     }
 };

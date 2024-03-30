@@ -50,15 +50,29 @@ export default async function PostPage({
 }: {
     params: { postId: string };
 }) {
-    const { title, body, imageCover, visited, comments, reactions } =
-        await getPostById(postId);
+    const {
+        title,
+        body,
+        imageCover,
+        visited,
+        comments,
+        reactions,
+        owner,
+        createdAt,
+    } = await getPostById(postId);
 
     const { session } = await getUserAuth();
     const user = session?.user || null;
 
     return (
         <div className="flex flex-col pt-8">
-            <PostHeader title={title} body={body} reactions={reactions} />
+            <PostHeader
+                title={title}
+                body={body}
+                reactions={reactions}
+                owner={owner}
+                createdAt={createdAt}
+            />
             <CommentCount count={comments ? comments.length : 0} />
 
             <CommentList comments={comments} user={user} postId={postId} />

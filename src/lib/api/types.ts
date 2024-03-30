@@ -4,6 +4,7 @@ export interface Post {
     body: string;
     imageCover: string;
     visited: number;
+    createdAt: Date;
     owner: Owner;
 }
 
