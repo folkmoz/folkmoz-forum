@@ -47,7 +47,11 @@ export class PostController {
         return resp.data;
     }
 
-    public async createPost(title: string, content: string, image: string) {
+    public async createPost(
+        title: string,
+        content: string,
+        image: string,
+    ): Promise<{ insertedId: string; fromUser: string }[]> {
         await this.checkAuth("You need to be logged in to create a post.");
 
         const resp = await this.instance.post("/posts", {

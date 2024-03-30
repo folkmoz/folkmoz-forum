@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const links = [
     { href: "/", label: "หน้าแรก" },
-    { href: "/forum/new", label: "กระทู้" },
+    { href: "/posts", label: "กระทู้ทั้งหมด" },
 ];
 
 export const Navbar = () => {

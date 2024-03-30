@@ -4,6 +4,8 @@ import { CloudinaryAPI } from "@/lib/api/CloudinaryAPI";
 import { PostController } from "@/lib/api/Post.controller";
 import { handlerResponse } from "@/lib/utils";
 import { ActionResp } from "@/lib/api/types";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 type Data = {
     title: string;
@@ -31,7 +33,9 @@ export const saveData = async (json: string): Promise<ActionResp> => {
             uploadResult.secure_url,
         );
 
-        return handlerResponse.ok("Data saved!");
+        revalidatePath("/");
+
+        return handlerResponse.ok(resp[0].insertedId);
     } catch (error) {
         return handlerResponse.error(error);
     }

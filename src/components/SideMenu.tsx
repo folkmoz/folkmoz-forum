@@ -22,12 +22,33 @@ import {
 import { BellIcon, SearchIcon } from "lucide-react";
 import { AuthSession } from "@/lib/auth/utils";
 import { WithAuthMenu } from "@/components/auth/WithAuthMenu";
+import { useDebounce } from "use-debounce";
+import { env } from "@/lib/env.mjs";
+import { useRouter } from "next/navigation";
+
+type SearchResult = {
+    id: string;
+    title: string;
+    author: string;
+};
 
 export const SideMenu = ({ session }: { session: AuthSession | null }) => {
+    const [queryPosts, setQueryPosts] = useState<SearchResult[]>([]);
     const [open, setOpen] = useState(false);
+    const [text, setText] = useState("");
+    const [query] = useDebounce(text, 1000);
+
+    const router = useRouter();
 
     const toggle = () => {
         setOpen(!open);
+        setQueryPosts([]);
+        setText("");
+    };
+
+    const onSelect = (postId: string) => {
+        router.push(`/post/${postId}`);
+        setOpen(false);
     };
 
     useEffect(() => {
@@ -44,6 +65,20 @@ export const SideMenu = ({ session }: { session: AuthSession | null }) => {
             document.removeEventListener("keydown", down);
         };
     }, []);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const res = await fetch(
+                `${env.NEXT_PUBLIC_BACKEND_URL}/posts?q=${query}&limit=5`,
+            );
+            const data = await res.json();
+            setQueryPosts(data);
+        };
+
+        if (query) {
+            fetchPosts();
+        }
+    }, [query]);
 
     return (
         <>
@@ -75,41 +110,28 @@ export const SideMenu = ({ session }: { session: AuthSession | null }) => {
             </div>
 
             <CommandDialog open={open} onOpenChange={toggle}>
-                <CommandInput placeholder="ค้นหาโพสต์..." />
+                <CommandInput
+                    placeholder="ค้นหาโพสต์..."
+                    // onKeyUp={(e) => setText(e.currentTarget.value)}
+                    onValueChange={(value) => setText(value)}
+                    value={text}
+                />
                 <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
-                    <CommandGroup heading="Suggestions">
-                        <CommandItem>
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            <span>Calendar</span>
-                        </CommandItem>
-                        <CommandItem>
-                            <FaceIcon className="mr-2 h-4 w-4" />
-                            <span>Search Emoji</span>
-                        </CommandItem>
-                        <CommandItem>
-                            <RocketIcon className="mr-2 h-4 w-4" />
-                            <span>Launch</span>
-                        </CommandItem>
-                    </CommandGroup>
-                    <CommandSeparator />
-                    <CommandGroup heading="Settings">
-                        <CommandItem>
-                            <PersonIcon className="mr-2 h-4 w-4" />
-                            <span>Profile</span>
-                            <CommandShortcut>⌘P</CommandShortcut>
-                        </CommandItem>
-                        <CommandItem>
-                            <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
-                            <span>Mail</span>
-                            <CommandShortcut>⌘B</CommandShortcut>
-                        </CommandItem>
-                        <CommandItem>
-                            <GearIcon className="mr-2 h-4 w-4" />
-                            <span>Settings</span>
-                            <CommandShortcut>⌘S</CommandShortcut>
-                        </CommandItem>
-                    </CommandGroup>
+                    {queryPosts.length > 0 ? (
+                        <>
+                            <CommandGroup heading="Search Results">
+                                {queryPosts.map((post) => (
+                                    <CommandItem
+                                        key={post.id}
+                                        onSelect={() => onSelect(post.id)}
+                                    >
+                                        <span>{post.title}</span>
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </>
+                    ) : null}
                 </CommandList>
             </CommandDialog>
         </>

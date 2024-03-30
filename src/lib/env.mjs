@@ -25,6 +25,7 @@ export const env = createEnv({
     CLOUDINARY_API_SECRET: z.string().min(1),
   },
   client: {
+    NEXT_PUBLIC_BACKEND_URL: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_UPLOAD_BODY_PRESET: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_UPLOAD_COVER_PRESET: z.string().min(1),
     NEXT_PUBLIC_CLOUDINARY_URL: z.string().min(1),
@@ -43,5 +44,6 @@ export const env = createEnv({
     NEXT_PUBLIC_CLOUDINARY_UPLOAD_COVER_PRESET: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_COVER_PRESET,
     NEXT_PUBLIC_CLOUDINARY_URL: process.env.NEXT_PUBLIC_CLOUDINARY_URL,
     NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
+    NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
   },
 });

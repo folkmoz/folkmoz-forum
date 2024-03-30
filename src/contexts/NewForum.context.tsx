@@ -49,6 +49,23 @@ export const NewForumProvider = ({
         setState(initialNewForumState);
     };
 
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (state.isSubmitting) {
+                e.preventDefault();
+                e.returnValue = "Are you sure you want to leave?";
+            }
+        };
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        if (state.isSubmitting) {
+            document.body.style.overflow = "hidden";
+        }
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+            document.body.style.overflow = "auto";
+        };
+    }, [state.isSubmitting]);
+
     return (
         <NewForumContext.Provider value={{ state, setState, resetState }}>
             {children}

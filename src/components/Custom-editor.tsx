@@ -9,6 +9,7 @@ import { EventInfo } from "@ckeditor/ckeditor5-utils";
 import { UploadAdapter, FileLoader } from "@ckeditor/ckeditor5-upload";
 import { useNewForum } from "@/contexts/NewForum.context";
 import { env } from "@/lib/env.mjs";
+import { useFormStatus } from "react-dom";
 
 const uploadOne = async (file: File) => {
     const data = new FormData();
@@ -96,12 +97,10 @@ function uploadPlugin(editor: Editor) {
     };
 }
 
-export const CustomEditor = ({
-    initialData = "",
-    onChange,
-}: CustomEditorProps) => {
+export const CustomEditor = ({ initialData = "" }: CustomEditorProps) => {
     const editorRef = useRef<Editor>();
-    const { setState } = useNewForum();
+    const { setState, state } = useNewForum();
+    const { pending } = useFormStatus();
 
     const handleChange = (event: EventInfo, editor: Editor) => {
         const data = editor.getData();
@@ -109,8 +108,11 @@ export const CustomEditor = ({
         setState({ content: data });
     };
 
+    const disabled = state.isSubmitting || pending;
+
     return (
         <CKEditor
+            disabled={disabled}
             editor={EditorClassic}
             config={{
                 ...editorConfig,
