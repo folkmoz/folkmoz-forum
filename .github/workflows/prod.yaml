@@ -42,14 +42,17 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ env.DOCKERHUB_USERNAME }}/talktrek-backend:latest
+          tags: ${{ env.DOCKERHUB_USERNAME }}/talktrek:latest
+          args: |
+            --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} 
+            --build-arg GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
 
     - name: Deploy to Azure Web App from Docker Hub
       uses: azure/webapps-deploy@v3
       with:
           app-name: ${{ vars.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE_PROD }}
-          images: ${{ env.DOCKERHUB_USERNAME }}/talktrek-backend:latest
+          images: ${{ env.DOCKERHUB_USERNAME }}/talktrek:latest
 
 
 
