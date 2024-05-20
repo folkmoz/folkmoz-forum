@@ -24,8 +24,8 @@ RUN --mount=type=cache,target=/root/.npm \
     npm install -g pnpm@${PNPM_VERSION}
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
 
+COPY . .
 
 ARG GOOGLE_CLIENT_ID=Enter-Google-Client-ID
 ARG GOOGLE_CLIENT_SECRET=Enter-Google-Client-Secret
@@ -83,6 +83,8 @@ COPY --from=builder /app/public ./public
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
+
+COPY --from=builder --chown=nextjs:nodejs /app/certificate.pem ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
