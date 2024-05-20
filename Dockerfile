@@ -27,8 +27,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 
-ARG GOOGLE_CLIENT_ID
-ARG GOOGLE_CLIENT_SECRET
+ARG GOOGLE_CLIENT_ID=Enter-Google-Client-ID
+ARG GOOGLE_CLIENT_SECRET=Enter-Google-Client-Secret
 
 ENV NODE_ENV production
 ENV DATABASE_URL postgres://folkmoz:190545fM@talktrek.postgres.database.azure.com:5432/talktrek?sslmode=require
