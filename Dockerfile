@@ -10,16 +10,23 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.npm \
     npm install -g pnpm@${PNPM_VERSION}
 
+# Copy the package.json and pnpm-lock.yaml and folder ckeditor to the working directory.
 COPY package.json pnpm-lock.yaml ./
+COPY ckeditor ./ckeditor
+
 RUN pnpm install --frozen-lockfile
 
 
 FROM base AS builder
 WORKDIR /app
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm install -g pnpm@${PNPM_VERSION}
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN npm run build
+RUN pnpm run build
 
 
 FROM base AS runner
