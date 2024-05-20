@@ -8,18 +8,8 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-    CommandSeparator,
-    CommandShortcut,
 } from "@/components/ui/command";
-import {
-    CalendarIcon,
-    EnvelopeClosedIcon,
-    FaceIcon,
-    GearIcon,
-    PersonIcon,
-    RocketIcon,
-} from "@radix-ui/react-icons";
-import { BellIcon, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { AuthSession } from "@/lib/auth/utils";
 import { WithAuthMenu } from "@/components/auth/WithAuthMenu";
 import { useDebounce } from "use-debounce";
@@ -100,9 +90,7 @@ export const SideMenu = ({ session }: { session: AuthSession | null }) => {
                             <span className="text-xs">⌘</span>K
                         </kbd>
                     </button>
-                    <button type="button" className="hover:opacity-75">
-                        <BellIcon className="h-5 w-5" />
-                    </button>
+
                     {session?.session ? (
                         <WithAuthMenu session={session} />
                     ) : null}

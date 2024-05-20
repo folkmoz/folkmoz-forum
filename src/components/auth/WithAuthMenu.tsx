@@ -10,12 +10,29 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserProfileImage } from "@/components/UserProfileImage";
+import { BellIcon } from "lucide-react";
 
 export const WithAuthMenu = ({ session }: { session: AuthSession }) => {
     const { user } = session.session!;
 
     return (
         <>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <button type="button" className="hover:opacity-75">
+                        <BellIcon className="h-5 w-5" />
+                    </button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent className="w-80">
+                    <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Notification 1</DropdownMenuItem>
+                    <DropdownMenuItem>Notification 2</DropdownMenuItem>
+                    <DropdownMenuItem>Notification 3</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <button

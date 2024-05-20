@@ -1,10 +1,8 @@
 {
-  "id": "6b1830ed-afcb-48dc-b221-e6f13f6a0411",
-  "prevId": "00b63f09-700d-40c9-940b-5b6b5b716954",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "account": {
+    "public.account": {
       "name": "account",
       "schema": "",
       "columns": {
@@ -80,15 +78,15 @@
         "account_userId_user_id_fk": {
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -102,7 +100,7 @@
       },
       "uniqueConstraints": {}
     },
-    "comment": {
+    "public.comment": {
       "name": "comment",
       "schema": "",
       "columns": {
@@ -149,34 +147,34 @@
         "comment_post_id_post_id_fk": {
           "name": "comment_post_id_post_id_fk",
           "tableFrom": "comment",
-          "tableTo": "post",
           "columnsFrom": [
             "post_id"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "comment_user_id_user_id_fk": {
           "name": "comment_user_id_user_id_fk",
           "tableFrom": "comment",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "comment_reaction": {
+    "public.comment_reaction": {
       "name": "comment_reaction",
       "schema": "",
       "columns": {
@@ -211,34 +209,34 @@
         "comment_reaction_comment_id_comment_id_fk": {
           "name": "comment_reaction_comment_id_comment_id_fk",
           "tableFrom": "comment_reaction",
-          "tableTo": "comment",
           "columnsFrom": [
             "comment_id"
           ],
+          "tableTo": "comment",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "comment_reaction_user_id_user_id_fk": {
           "name": "comment_reaction_user_id_user_id_fk",
           "tableFrom": "comment_reaction",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "notification": {
+    "public.notification": {
       "name": "notification",
       "schema": "",
       "columns": {
@@ -292,21 +290,21 @@
         "notification_user_id_user_id_fk": {
           "name": "notification_user_id_user_id_fk",
           "tableFrom": "notification",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "post": {
+    "public.post": {
       "name": "post",
       "schema": "",
       "columns": {
@@ -366,21 +364,21 @@
         "post_user_id_user_id_fk": {
           "name": "post_user_id_user_id_fk",
           "tableFrom": "post",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "post_reaction": {
+    "public.post_reaction": {
       "name": "post_reaction",
       "schema": "",
       "columns": {
@@ -415,34 +413,34 @@
         "post_reaction_post_id_post_id_fk": {
           "name": "post_reaction_post_id_post_id_fk",
           "tableFrom": "post_reaction",
-          "tableTo": "post",
           "columnsFrom": [
             "post_id"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "post_reaction_user_id_user_id_fk": {
           "name": "post_reaction_user_id_user_id_fk",
           "tableFrom": "post_reaction",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "post_subscription": {
+    "public.post_subscription": {
       "name": "post_subscription",
       "schema": "",
       "columns": {
@@ -471,34 +469,34 @@
         "post_subscription_post_id_post_id_fk": {
           "name": "post_subscription_post_id_post_id_fk",
           "tableFrom": "post_subscription",
-          "tableTo": "post",
           "columnsFrom": [
             "post_id"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "post_subscription_user_id_user_id_fk": {
           "name": "post_subscription_user_id_user_id_fk",
           "tableFrom": "post_subscription",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "saved_post": {
+    "public.saved_post": {
       "name": "saved_post",
       "schema": "",
       "columns": {
@@ -527,34 +525,34 @@
         "saved_post_post_id_post_id_fk": {
           "name": "saved_post_post_id_post_id_fk",
           "tableFrom": "saved_post",
-          "tableTo": "post",
           "columnsFrom": [
             "post_id"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "saved_post_user_id_user_id_fk": {
           "name": "saved_post_user_id_user_id_fk",
           "tableFrom": "saved_post",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "session": {
+    "public.session": {
       "name": "session",
       "schema": "",
       "columns": {
@@ -582,21 +580,21 @@
         "session_userId_user_id_fk": {
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "public.user": {
       "name": "user",
       "schema": "",
       "columns": {
@@ -643,7 +641,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "verificationToken": {
+    "public.verificationToken": {
       "name": "verificationToken",
       "schema": "",
       "columns": {
@@ -681,22 +679,25 @@
     }
   },
   "enums": {
-    "reactions": {
+    "public.reactions": {
       "name": "reactions",
-      "values": {
-        "like": "like",
-        "love": "love",
-        "haha": "haha",
-        "wow": "wow",
-        "sad": "sad",
-        "angry": "angry"
-      }
+      "schema": "public",
+      "values": [
+        "like",
+        "love",
+        "haha",
+        "wow",
+        "sad",
+        "angry"
+      ]
     }
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "6b1830ed-afcb-48dc-b221-e6f13f6a0411",
+  "prevId": "00b63f09-700d-40c9-940b-5b6b5b716954"
 }

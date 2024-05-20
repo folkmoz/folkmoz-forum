@@ -14,6 +14,10 @@ async function getPosts(): Promise<Post[]> {
 
 export const PostList = async () => {
     const posts = await getPosts();
+
+    if (!posts.length) {
+        return null;
+    }
     return (
         <>
             {posts.map((post) => (

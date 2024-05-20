@@ -43,7 +43,11 @@ export class WebsocketController {
     sendMessage(message: any) {
         const encoder = new TextEncoder();
         const binaryData = encoder.encode(JSON.stringify(message));
-        this.wss?.send(binaryData);
+        if (this.wss && this.wss.readyState === WebSocket.OPEN) {
+            this.wss.send(binaryData);
+        } else {
+            this.reconnect();
+        }
     }
 
     close() {

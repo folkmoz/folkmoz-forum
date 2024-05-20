@@ -24,12 +24,15 @@ export const Header = async () => {
                         <div className="flex items-center justify-between py-4 relative">
                             <div className="flex items-center space-x-4">
                                 <Link href={"/"}>
-                                    <Image
-                                        src="/images/Logo.svg"
-                                        alt="Logo"
-                                        width={34}
-                                        height={40}
-                                    />
+                                    {/*<Image*/}
+                                    {/*    src="/images/Logo.svg"*/}
+                                    {/*    alt="Logo"*/}
+                                    {/*    width={34}*/}
+                                    {/*    height={40}*/}
+                                    {/*/>*/}
+                                    <div className="font-bold text-3xl">
+                                        TalkTrek
+                                    </div>
                                 </Link>
                             </div>
 

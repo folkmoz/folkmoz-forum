@@ -1,10 +1,8 @@
 {
-  "id": "e33597db-306b-4d52-8566-fd1326e62751",
-  "prevId": "28c0d151-92d9-4853-bff4-27e53970ce48",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "account": {
+    "public.account": {
       "name": "account",
       "schema": "",
       "columns": {
@@ -80,15 +78,15 @@
         "account_userId_user_id_fk": {
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -102,7 +100,7 @@
       },
       "uniqueConstraints": {}
     },
-    "comment_reaction": {
+    "public.comment_reaction": {
       "name": "comment_reaction",
       "schema": "",
       "columns": {
@@ -137,34 +135,34 @@
         "comment_reaction_commentId_comment_id_fk": {
           "name": "comment_reaction_commentId_comment_id_fk",
           "tableFrom": "comment_reaction",
-          "tableTo": "comment",
           "columnsFrom": [
             "commentId"
           ],
+          "tableTo": "comment",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "comment_reaction_userId_user_id_fk": {
           "name": "comment_reaction_userId_user_id_fk",
           "tableFrom": "comment_reaction",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "comment": {
+    "public.comment": {
       "name": "comment",
       "schema": "",
       "columns": {
@@ -211,34 +209,34 @@
         "comment_postId_post_id_fk": {
           "name": "comment_postId_post_id_fk",
           "tableFrom": "comment",
-          "tableTo": "post",
           "columnsFrom": [
             "postId"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "comment_userId_user_id_fk": {
           "name": "comment_userId_user_id_fk",
           "tableFrom": "comment",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "notification": {
+    "public.notification": {
       "name": "notification",
       "schema": "",
       "columns": {
@@ -292,21 +290,21 @@
         "notification_userId_user_id_fk": {
           "name": "notification_userId_user_id_fk",
           "tableFrom": "notification",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "post_reaction": {
+    "public.post_reaction": {
       "name": "post_reaction",
       "schema": "",
       "columns": {
@@ -341,34 +339,34 @@
         "post_reaction_postId_post_id_fk": {
           "name": "post_reaction_postId_post_id_fk",
           "tableFrom": "post_reaction",
-          "tableTo": "post",
           "columnsFrom": [
             "postId"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "post_reaction_userId_user_id_fk": {
           "name": "post_reaction_userId_user_id_fk",
           "tableFrom": "post_reaction",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "post_subscription": {
+    "public.post_subscription": {
       "name": "post_subscription",
       "schema": "",
       "columns": {
@@ -397,34 +395,34 @@
         "post_subscription_postId_post_id_fk": {
           "name": "post_subscription_postId_post_id_fk",
           "tableFrom": "post_subscription",
-          "tableTo": "post",
           "columnsFrom": [
             "postId"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "post_subscription_userId_user_id_fk": {
           "name": "post_subscription_userId_user_id_fk",
           "tableFrom": "post_subscription",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "post": {
+    "public.post": {
       "name": "post",
       "schema": "",
       "columns": {
@@ -484,21 +482,21 @@
         "post_user_id_user_id_fk": {
           "name": "post_user_id_user_id_fk",
           "tableFrom": "post",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "saved_post": {
+    "public.saved_post": {
       "name": "saved_post",
       "schema": "",
       "columns": {
@@ -527,34 +525,34 @@
         "saved_post_postId_post_id_fk": {
           "name": "saved_post_postId_post_id_fk",
           "tableFrom": "saved_post",
-          "tableTo": "post",
           "columnsFrom": [
             "postId"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "saved_post_userId_user_id_fk": {
           "name": "saved_post_userId_user_id_fk",
           "tableFrom": "saved_post",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "session": {
+    "public.session": {
       "name": "session",
       "schema": "",
       "columns": {
@@ -582,21 +580,21 @@
         "session_userId_user_id_fk": {
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "public.user": {
       "name": "user",
       "schema": "",
       "columns": {
@@ -643,7 +641,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "verificationToken": {
+    "public.verificationToken": {
       "name": "verificationToken",
       "schema": "",
       "columns": {
@@ -681,22 +679,25 @@
     }
   },
   "enums": {
-    "reactions": {
+    "public.reactions": {
       "name": "reactions",
-      "values": {
-        "like": "like",
-        "love": "love",
-        "haha": "haha",
-        "wow": "wow",
-        "sad": "sad",
-        "angry": "angry"
-      }
+      "schema": "public",
+      "values": [
+        "like",
+        "love",
+        "haha",
+        "wow",
+        "sad",
+        "angry"
+      ]
     }
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "e33597db-306b-4d52-8566-fd1326e62751",
+  "prevId": "28c0d151-92d9-4853-bff4-27e53970ce48"
 }

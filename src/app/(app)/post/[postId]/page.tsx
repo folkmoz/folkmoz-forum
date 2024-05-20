@@ -6,6 +6,7 @@ import { CommentCount } from "@/app/(app)/post/[postId]/_components/CommentCount
 import { CommentList } from "@/app/(app)/post/[postId]/_components/CommentList";
 import { getUserAuth } from "@/lib/auth/utils";
 import { PostHeader } from "@/app/(app)/post/[postId]/_components/PostHeader";
+import { notFound } from "next/navigation";
 
 interface GetPostByIdResponse extends Post {
     comments: Comment[];
@@ -40,6 +41,12 @@ export async function generateMetadata({
 }) {
     const post = await getPostById(postId, ["title"]);
 
+    if (!post) {
+        return {
+            title: "Post not found",
+        };
+    }
+
     return {
         title: post.title,
     };
@@ -50,16 +57,13 @@ export default async function PostPage({
 }: {
     params: { postId: string };
 }) {
-    const {
-        title,
-        body,
-        imageCover,
-        visited,
-        comments,
-        reactions,
-        owner,
-        createdAt,
-    } = await getPostById(postId);
+    const post = await getPostById(postId);
+
+    if (!post) {
+        return notFound();
+    }
+
+    const { title, body, comments, reactions, owner, createdAt } = post;
 
     const { session } = await getUserAuth();
     const user = session?.user || null;
