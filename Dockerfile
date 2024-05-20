@@ -1,11 +1,17 @@
 FROM node:18-alpine AS base
 
 FROM base AS deps
+
+ARG PNPM_VERSION=8.15.1
+
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package*.json /.
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+    npm install -g pnpm@${PNPM_VERSION}
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 
 FROM base AS builder
