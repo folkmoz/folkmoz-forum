@@ -1,7 +1,5 @@
 import { usePostPage } from "@/contexts/PostPage.context";
-// import dynamic from "next/dynamic";
-// const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import ReactQuill from "react-quill";
+import ReactQuill, { ReactQuillProps } from "react-quill";
 import { useEffect, useRef } from "react";
 
 const formats = [
@@ -16,43 +14,52 @@ const formats = [
     "align",
     "link",
     "video",
-];
+] as const;
+
+const modules = {
+    toolbar: [
+        ["bold", "italic", "underline", "strike", "code"],
+        [
+            { list: "ordered" },
+            { list: "bullet" },
+            { indent: "-1" },
+            { indent: "+1" },
+            { align: [] },
+        ],
+        ["link", "video"],
+    ],
+} as const;
+
+interface QuillInstance {
+    focus: () => void;
+}
 
 export const QuillEditor = () => {
     const { state, setState } = usePostPage();
-    const quillRef = useRef(null);
+    const quillRef = useRef<QuillInstance | null>(null);
 
     useEffect(() => {
-        // set focus to the editor
         if (quillRef.current && state.isOpenCommentEditor) {
-            // @ts-ignore
             quillRef.current.focus();
         }
     }, [state.isOpenCommentEditor]);
 
+    const handleChange: ReactQuillProps["onChange"] = (value) => {
+        setState({ comment: value });
+    };
+
     return (
-        <>
-            <ReactQuill
-                // @ts-ignore
-                ref={quillRef}
-                theme="snow"
-                modules={{
-                    toolbar: [
-                        ["bold", "italic", "underline", "strike", "code"],
-                        [
-                            { list: "ordered" },
-                            { list: "bullet" },
-                            { indent: "-1" },
-                            { indent: "+1" },
-                            { align: [] },
-                        ],
-                        ["link", "video"],
-                    ],
-                }}
-                formats={formats}
-                value={state.comment}
-                onChange={(e) => setState({ comment: e })}
-            />
-        </>
+        <ReactQuill
+            ref={(el) => {
+                if (el) {
+                    quillRef.current = el.getEditor();
+                }
+            }}
+            theme="snow"
+            modules={modules}
+            formats={[...formats]}
+            value={state.comment}
+            onChange={handleChange}
+        />
     );
 };

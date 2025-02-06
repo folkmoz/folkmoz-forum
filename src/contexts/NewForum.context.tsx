@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer, useMemo } from "react";
 
 type NewForumState = {
     title: string;
@@ -23,30 +23,42 @@ const initialNewForumState = {
     error: null,
 } satisfies NewForumState;
 
-const NewForumContext = createContext(
-    {} as {
-        state: NewForumState;
-        setState: (newValue: Partial<NewForumState>) => void;
-        resetState: () => void;
-    },
-);
-
-const newForumReducer = (
-    state: NewForumState = initialNewForumState,
-    newValue: Partial<NewForumState>,
-) => {
-    return { ...state, ...newValue };
+type NewForumContextType = {
+    state: NewForumState;
+    setState: (newValue: Partial<NewForumState>) => void;
+    resetState: () => void;
 };
 
-export const NewForumProvider = ({
-    children,
-}: {
-    children: React.ReactNode;
-}) => {
-    const [state, setState] = useReducer(newForumReducer, initialNewForumState);
+const NewForumContext = createContext<NewForumContextType | null>(null);
+
+type NewForumAction = {
+    type: 'UPDATE' | 'RESET';
+    payload?: Partial<NewForumState>;
+};
+
+const newForumReducer = (
+    state: NewForumState,
+    action: NewForumAction
+): NewForumState => {
+    switch (action.type) {
+        case 'UPDATE':
+            return { ...state, ...action.payload };
+        case 'RESET':
+            return initialNewForumState;
+        default:
+            return state;
+    }
+};
+
+export const NewForumProvider = ({ children }: { children: React.ReactNode }) => {
+    const [state, dispatch] = useReducer(newForumReducer, initialNewForumState);
+
+    const setState = (newValue: Partial<NewForumState>) => {
+        dispatch({ type: 'UPDATE', payload: newValue });
+    };
 
     const resetState = () => {
-        setState(initialNewForumState);
+        dispatch({ type: 'RESET' });
     };
 
     useEffect(() => {
@@ -54,29 +66,37 @@ export const NewForumProvider = ({
             if (state.isSubmitting) {
                 e.preventDefault();
                 e.returnValue = "Are you sure you want to leave?";
+                return e.returnValue;
             }
         };
-        window.addEventListener("beforeunload", handleBeforeUnload);
+
         if (state.isSubmitting) {
+            window.addEventListener("beforeunload", handleBeforeUnload);
             document.body.style.overflow = "hidden";
         }
+
         return () => {
             window.removeEventListener("beforeunload", handleBeforeUnload);
             document.body.style.overflow = "auto";
         };
     }, [state.isSubmitting]);
 
+    const contextValue = useMemo(
+        () => ({ state, setState, resetState }),
+        [state]
+    );
+
     return (
-        <NewForumContext.Provider value={{ state, setState, resetState }}>
+        <NewForumContext.Provider value={contextValue}>
             {children}
         </NewForumContext.Provider>
     );
 };
 
-export const useNewForum = () => {
-    const context = NewForumContext;
-    if (context === undefined) {
+export const useNewForum = (): NewForumContextType => {
+    const context = useContext(NewForumContext);
+    if (!context) {
         throw new Error("useNewForum must be used within NewForumProvider");
     }
-    return useContext(context);
+    return context;
 };

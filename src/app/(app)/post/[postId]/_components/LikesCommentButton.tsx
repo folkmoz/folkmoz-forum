@@ -21,11 +21,22 @@ import {
     FaRegFaceLaughBeam,
 } from "react-icons/fa6";
 import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
 
 type LikesButtonProps = {
     reaction: ReactionType;
     postId: string;
     commentId: string;
+};
+
+const reactionColors: Record<ReactionType, string> = {
+    like: "text-blue-500",
+    love: "text-red-500",
+    haha: "text-yellow-500",
+    wow: "text-green-500",
+    sad: "text-gray-500",
+    angry: "text-gray-900",
+    unliked: "text-muted-foreground",
 };
 
 const reactionsDisplay = {
@@ -36,7 +47,7 @@ const reactionsDisplay = {
     sad: FaFaceSadTear,
     wow: FaFaceSurprise,
     angry: FaFaceAngry,
-};
+} as const;
 
 export const LikesCommentButton = ({
     reaction,
@@ -49,61 +60,43 @@ export const LikesCommentButton = ({
         (_, newReact: ReactionType) => newReact,
     );
     const { requiredAuth } = useAuth();
+    const ReactionIcon = useMemo(() => reactionsDisplay[liked], [liked]);
 
     const handleLike = () => {
         requiredAuth(() => {
             if (pending) return;
             startTransition(async () => {
-                if (liked === "unliked") {
-                    toggleAction("like");
-                    const resp = await reactionToComment(
-                        postId,
-                        commentId,
-                        "like",
-                    );
-                    if (resp.status === "error") {
-                        toast.error(resp.message);
-                        toggleAction("unliked");
-                    }
-                } else {
-                    toggleAction("unliked");
-                    const resp = await cancelReactionToComment(
-                        postId,
-                        commentId,
-                    );
-                    if (resp.status === "error") {
-                        toast.error(resp.message);
-                        toggleAction("like");
-                    }
+                const newReaction = liked === "unliked" ? "like" : "unliked";
+                const prevReaction = liked;
+
+                toggleAction(newReaction);
+
+                const resp = await (newReaction === "like"
+                    ? reactionToComment(postId, commentId, "like")
+                    : cancelReactionToComment(postId, commentId));
+
+                if (resp.status === "error") {
+                    toast.error(resp.message);
+                    toggleAction(prevReaction);
                 }
             });
         });
     };
 
-    const ReactionIcon = useMemo(() => reactionsDisplay[liked], [liked]);
-
     return (
         <HoverCard openDelay={400} closeDelay={100}>
             <HoverCardTrigger asChild>
-                <button
+                <Button
                     onClick={handleLike}
+                    variant="ghost"
                     className={cn(
-                        "flex items-center gap-2 text-muted-foreground active:scale-95 hover:bg-neutral-200/70 py-3 px-5 rounded-md",
-                        {
-                            "text-blue-500": liked === "like",
-                            "text-red-500": liked === "love",
-                            "text-yellow-500": liked === "haha",
-                            "text-green-500": liked === "wow",
-                            "text-gray-500": liked === "sad",
-                            "text-gray-900": liked === "angry",
-                        },
+                        "flex items-center gap-2 active:scale-95 py-3 px-5",
+                        reactionColors[liked],
                     )}
                 >
-                    <span>
-                        <ReactionIcon size={22} />
-                    </span>
+                    <ReactionIcon size={22} />
                     ถูกใจ
-                </button>
+                </Button>
             </HoverCardTrigger>
             <HoverCardContent side="top" className="w-full p-0 rounded-full">
                 <CommentActionPanel />

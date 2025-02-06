@@ -12,25 +12,46 @@ import { useNewForum } from "@/contexts/NewForum.context";
 import { env } from "@/lib/env.mjs";
 import { useFormStatus } from "react-dom";
 
-const uploadOne = async (file: File) => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_BODY_PRESET);
-    data.append("timestamp", `${Date.now()}`);
+interface EditorConfig {
+    config: {
+        height: string;
+    };
+    toolbar: {
+        items: string[];
+    };
+    language: string;
+    image: {
+        toolbar: string[];
+    };
+    table: {
+        contentToolbar: string[];
+    };
+}
 
-    const resp = await axios.post(env.NEXT_PUBLIC_CLOUDINARY_URL, data);
+const uploadOne = async (file: File): Promise<string> => {
+    try {
+        const data = new FormData();
+        data.append("file", file);
+        data.append(
+            "upload_preset",
+            env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_BODY_PRESET,
+        );
+        data.append("timestamp", `${Date.now()}`);
 
-    return resp.data.secure_url;
+        const resp = await axios.post(env.NEXT_PUBLIC_CLOUDINARY_URL, data);
+        return resp.data.secure_url;
+    } catch (error) {
+        console.error("Error uploading file:", error);
+        throw new Error("Failed to upload file");
+    }
 };
 
-const editorConfig = {
+const editorConfig: EditorConfig = {
     config: {
         height: "500px",
     },
     toolbar: {
         items: [
-            // "heading",
-            // "|",
             "undo",
             "redo",
             "|",
@@ -39,8 +60,6 @@ const editorConfig = {
             "underline",
             "strikethrough",
             "link",
-            // "bulletedList",
-            // "numberedList",
             "code",
             "|",
             "outdent",
@@ -49,11 +68,7 @@ const editorConfig = {
             "horizontalLine",
             "|",
             "imageUpload",
-            // "blockQuote",
-            // "insertTable",
             "mediaEmbed",
-            // "undo",
-            // "redo",
             "subscript",
         ],
     },
@@ -66,35 +81,35 @@ const editorConfig = {
     },
 };
 
-export type CustomEditorProps = {
+export interface CustomEditorProps {
     initialData: string;
     onChange?: (data: string) => void;
-};
+}
 
-function uploadAdapter(loader: FileLoader): UploadAdapter {
-    return {
-        upload: () => {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    const file = await loader.file;
-                    const url = await uploadOne(file!);
-                    resolve({
-                        default: url,
-                    });
-                } catch (error) {
-                    reject(error);
-                }
-            });
-        },
-        abort: () => {},
-    };
+class CustomUploadAdapter implements UploadAdapter {
+    constructor(private loader: FileLoader) {}
+
+    async upload(): Promise<{ default: string }> {
+        try {
+            const file = await this.loader.file;
+            if (!file) throw new Error("No file to upload");
+
+            const url = await uploadOne(file);
+            return { default: url };
+        } catch (error) {
+            console.error("Upload failed:", error);
+            throw error;
+        }
+    }
+
+    abort(): void {}
 }
 
 function uploadPlugin(editor: Editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (
         loader: FileLoader,
     ) => {
-        return uploadAdapter(loader);
+        return new CustomUploadAdapter(loader);
     };
 }
 
@@ -103,9 +118,8 @@ export const CustomEditor = ({ initialData = "" }: CustomEditorProps) => {
     const { setState, state } = useNewForum();
     const { pending } = useFormStatus();
 
-    const handleChange = (event: EventInfo, editor: Editor) => {
+    const handleChange = (_event: EventInfo, editor: Editor) => {
         const data = editor.getData();
-        // onChange?.(data);
         setState({ content: data });
     };
 

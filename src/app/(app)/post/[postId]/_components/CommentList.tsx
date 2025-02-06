@@ -3,6 +3,7 @@
 import { Comment } from "@/lib/api/types";
 import { CommentItem } from "@/app/(app)/post/[postId]/_components/CommentItem";
 import { User } from "@/lib/auth/utils";
+import { memo } from "react";
 
 type CommentListProps = {
     comments: Comment[];
@@ -10,11 +11,21 @@ type CommentListProps = {
     postId: string;
 };
 
-export const CommentList = ({ comments, user, postId }: CommentListProps) => {
-    return (
-        <div className="mt-4 space-y-20">
-            {comments.length !== 0 &&
-                comments.map((comment, index) => (
+const EmptyComments = () => (
+    <div className="text-center text-muted-foreground py-8">
+        ยังไม่มีคอมเม้นท์เลย คุณเป็นคนแรกที่จะคอมเม้น! คอมเม้นเลย :)
+    </div>
+);
+
+export const CommentList = memo(
+    ({ comments, user, postId }: CommentListProps) => {
+        if (!comments.length) {
+            return <EmptyComments />;
+        }
+
+        return (
+            <div className="mt-4 space-y-20">
+                {comments.map((comment, index) => (
                     <CommentItem
                         comment={comment}
                         key={comment.id}
@@ -23,6 +34,9 @@ export const CommentList = ({ comments, user, postId }: CommentListProps) => {
                         postId={postId}
                     />
                 ))}
-        </div>
-    );
-};
+            </div>
+        );
+    },
+);
+
+CommentList.displayName = "CommentList";

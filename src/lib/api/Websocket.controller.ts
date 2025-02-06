@@ -63,6 +63,7 @@ export class WebsocketController {
 
     connect() {
         this.wss = new WebSocket(this.url);
+
         this.wss.onopen = () => {
             this.pingInterval = setInterval(() => {
                 this.sendPing();
